@@ -1,0 +1,179 @@
+aptitude install mysql-server libapache2-mod-php5 php memcached git vim php5-mysql php-apc php5-mcrypt
+
+cd /srv
+mkdir devrepo
+mkdir devclient
+cd devrepo
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git w
+cd devclient
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git w
+configure apache (see below)
+delete /etc/apache2/sites-enabled/000-default
+a2enmod rewrite
+/etc/init.d/apache2 restart
+
+=====
+repo:
+
+Install MediaWiki in the browser or on the command line, put LocalSettings.php in its place
+add $wgArticlePath      = "/wiki/$1";
+run maintenance/update.php
+
+cd w/extensions
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Wikibase.git
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Diff.git
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/DataValues.git
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/UniversalLanguageSelector.git
+
+LocalSettings.php
+# The following permissions were set based on your choice in the installer
+$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['*']['edit'] = false;
+
+# End of automatically generated settings.
+# Add more configuration options below.
+$wgShowExceptionDetails = true;
+
+# Wikibase extensions and dependencies
+require_once( "$IP/extensions/Diff/Diff.php" );
+require_once( "$IP/extensions/DataValues/DataValues.php" );
+require_once( "$IP/extensions/UniversalLanguageSelector/UniversalLanguageSelector.php" );
+require_once( "$IP/extensions/Wikibase/repo/Wikibase.php" );
+require_once( "$IP/extensions/Wikibase/repo/ExampleSettings.php" );
+
+$wgDebugToolbar            = true;
+$wgShowSQLErrors = true;
+$wgShowDBErrorBacktrace = true;
+$wgDevelopmentWarnings = true;
+
+cd extensions/Wikibase/lib/maintenance/
+php populateSitesTable.php
+
+cd extensions/Wikibase/repo/maintenance
+php importInterlang.php --verbose --ignore-errors simple simple-elements.csv
+
+php importProperties.php --verbose en en-elements-properties.csv
+
+
+more extensions:
+for SiteMatrix go to /srv
+git clone https://gerrit.wikimedia.org/r/p/operations/mediawiki-config.git
+
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/APC.git
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Interwiki.git
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/Nuke.git
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/OAI.git
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SiteMatrix.git
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SpamBlacklist.git
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/ApiSandbox.git
+
+
+
+===========================
+
+Client
+
+cd /srv/client
+git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git w
+ s.o.
+apache
+im Browser installieren
+maintenance/update.php
+cloen the extensions
+maintenance/update.php
+php extensions/Wikibase/client/maintenance/populateInterwiki.php
+php extensions/Wikibase/lib/maintenance/populateSitesTable.php (yes, again!)
+
+
+touch /var/log/wikidata-replication.log
+chown www-data:www-data /var/log/wikidata-replication.log
+chmod 644 /var/log/wikidata-replication.log
+
+crontab:
+# git pull mediawiki core
+*/20 * * * * cd /srv/devrepo/w && /usr/bin/git pull
+*/20 * * * * cd /srv/devclient/w && /usr/bin/git pull
+
+# git pull extensions
+# repo
+*/20 * * * * cd /srv/devrepo/w/extensions/DataValues && /usr/bin/git pull
+*/20 * * * * cd /srv/devrepo/w/extensions/Diff && /usr/bin/git pull
+*/20 * * * * cd /srv/devrepo/w/extensions/UniversalLanguageSelector && /usr/bin/git pull
+*/20 * * * * cd /srv/devrepo/w/extensions/Wikibase && /usr/bin/git pull
+
+# client
+*/20 * * * * cd /srv/devclient/w/extensions/DataValues && /usr/bin/git pull
+*/20 * * * * cd /srv/devclient/w/extensions/Diff && /usr/bin/git pull
+*/20 * * * * cd /srv/devclient/w/extensions/UniversalLanguageSelector && /usr/bin/git pull
+*/20 * * * * cd /srv/devclient/w/extensions/Wikibase && /usr/bin/git pull
+
+# maintenance
+*/20 * * * * cd /srv/devrepo/w && /usr/bin/php maintenance/update.php --quick
+*/20 * * * * cd /srv/devclient/w && /usr/bin/php maintenance/update.php --quick
+
+# pollForChanges
+*/2 * * * * sudo -u www-data /usr/bin/php /srv/devclient/w/extensions/Wikibase/lib/maintenance/pollForChanges.php --since "yesterday" >> /var/log/wikidata-replication.log
+
+
+apache
+
+in /srv/devrepo and /srv/devclient create index.php
+<?php
+header( 'Location: http://wikidata-dev-repo.wikimedia.de/w/' ) ; (resp. client)
+
+repo apache:
+
+<VirtualHost *:80>
+»···»···ServerName wikidata-dev-repo.wikimedia.de
+        ServerAdmin webmaster@localhost
+»···»···ServerAlias *.wikidata-dev-repo.wikimedia.de
+
+»···»···RewriteEngine On
+»···»···RewriteCond %{HTTP_HOST} ^(de|en|he|hu)\.wikidata-dev-repo\.wikimedia\.de$
+»···»···RewriteRule ^/(wiki|title)/(.*)$ http://wikidata-dev-repo.wikimedia.de/title/%1wiki:$2 [R,QSA]
+»···»···RewriteRule ^/title/(de|en|he|hu)wiki:(.*)$ /w/index.php?title=Special:ItemByTitle/$1wiki/$2 [L,QSA]
+
+        DocumentRoot /srv/devrepo
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+
+        Alias /wiki /srv/devrepo/w/index.php
+
+        ErrorLog /var/log/apache2/devrepo-error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/devrepo-access.log combined
+        ServerSignature Off
+
+</VirtualHost>
+
+client apache:
+
+<VirtualHost *:80>
+»···»···ServerName wikidata-dev-client.wikimedia.de
+        ServerAdmin webmaster@localhost
+
+        DocumentRoot /srv/devclient
+
+»···»···<Directory />
+»···»···Options Indexes FollowSymlinks
+        AllowOverride None
+		</Directory>
+
+        Alias /wiki /srv/devclient/w/index.php
+
+        ErrorLog /var/log/apache2/devclient-error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog /var/log/apache2/devclient-access.log combined
+        ServerSignature Off
+
+</VirtualHost>
