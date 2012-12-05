@@ -84,6 +84,10 @@ maintenance/update.php
 php extensions/Wikibase/client/maintenance/populateInterwiki.php
 php extensions/Wikibase/lib/maintenance/populateSitesTable.php (yes, again!)
 
+For Load Balancer:
+/etc/mysql/my.cnf:
+bind-address = 0.0.0.0
+(labs instances are protected against connections on port 3306 from anywhere by default.)
 
 touch /var/log/wikidata-replication.log
 chown www-data:www-data /var/log/wikidata-replication.log
