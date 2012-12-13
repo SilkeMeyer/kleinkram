@@ -53,7 +53,7 @@ $wgEnotifWatchlist     = false; # UPO
 $wgEmailAuthentication = true;
 
 ## Database settings
-//credentials link
+require_once( "/srv/credentials-repo.php" );
 
 # MySQL specific settings
 $wgDBprefix         = "";
@@ -91,17 +91,17 @@ $wgShellLocale = "en_US.utf8";
 ## Set $wgCacheDirectory to a writable directory on the web server
 ## to make your wiki go slightly faster. The directory should not
 ## be publically accessible from the web.
-#$wgCacheDirectory = "$IP/cache";
-$wgCacheDirectory = false;
+$wgCacheDirectory = "$IP/cache";
+#$wgCacheDirectory = false;
 
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "en";
 
-$wgSecretKey = "blah";
+$wgSecretKey = "7ee08cb4160edcf013b5c4ab85fd9286b65b7ab75227d290f3b1be0d39c91b32";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "blahblah";
+$wgUpgradeKey = "a1b5224ba3afeb22";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook', 'vector':
@@ -205,3 +205,4 @@ $wgEnableJavaScriptTest = true;
 // config internal test desktop computer
 //$wgContentHandlerUseDB = true;
 //$wgULSIMEEnabled = false;
+//

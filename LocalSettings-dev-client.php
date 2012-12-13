@@ -52,7 +52,7 @@ $wgEnotifWatchlist     = false; # UPO
 $wgEmailAuthentication = true;
 
 ## Database settings
-// credentials link
+require_once( "/srv/credentials-client.php" );
 
 # MySQL specific settings
 $wgDBprefix         = "";
@@ -90,17 +90,17 @@ $wgShellLocale = "en_US.utf8";
 ## Set $wgCacheDirectory to a writable directory on the web server
 ## to make your wiki go slightly faster. The directory should not
 ## be publically accessible from the web.
-#$wgCacheDirectory = "$IP/cache";
-$wgCacheDirectory = false;
+$wgCacheDirectory = "$IP/cache";
+#$wgCacheDirectory = false;
 
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "en";
 
-$wgSecretKey = "blah";
+$wgSecretKey = "6ad029430b1c503a09667938afb8a8c0e4e2652e2a8cba5efcf6bbb9dbdef6d8";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "blah";
+$wgUpgradeKey = "7c3a425a147af80b";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook', 'vector':
@@ -164,6 +164,7 @@ require_once( "$IP/extensions/ExpandTemplates/ExpandTemplates.php" );
 require_once( "$IP/extensions/FeaturedFeeds/FeaturedFeeds.php" );
 require_once( "$IP/extensions/FlaggedRevs/FlaggedRevs.php" );
 require_once( "$IP/extensions/Gadgets/Gadgets.php" );
+//require_once( "$IP/extensions/GlobalBlocking/GlobalBlocking.php" );
 require_once( "$IP/extensions/GlobalUsage/GlobalUsage.php" );
 require_once( "$IP/extensions/ImageMap/ImageMap.php" );
 require_once( "$IP/extensions/InputBox/InputBox.php" );
@@ -240,7 +241,7 @@ $wgArticleFeedbackv5MaxCommentLength = 400;
 
 
 // Wikidata specific settings
-$wgWBSettings['repoUrl'] = 'http://wikidata-dev-repo.wikimedia.de';
+$wgWBSettings['repoUrl'] = '//wikidata-dev-repo.wikimedia.de';
 $wgWBSettings['repoScriptPath'] = '/w';
 $wgWBSettings['repoArticlePath'] = '/wiki/$1';
 $wgWBSettings['siteGlobalID'] = 'enwiki';
@@ -319,11 +320,6 @@ $wgProfileToDatabase = true;
 $wgProfileCallTree = false;
 // Should application server host be put into profiling table
 $wgProfilePerHost = false;
-
-// Settings for UDP profiler
-//$wgUDPProfilerHost = '127.0.0.1';
-//$wgUDPProfilerPort = '3811';
-
 // Detects non-matching wfProfileIn/wfProfileOut calls
 $wgDebugProfiling = true;
 // Output debug message on every wfProfileIn/wfProfileOut
@@ -335,3 +331,4 @@ $wgEnableProfileInfo = true;
 $wgDebugToolbar = true;
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
+$wgDebugLogGroups['wikibase'] = "/tmp/devclient-wikibase.log";
