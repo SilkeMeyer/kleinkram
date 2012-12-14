@@ -1,3 +1,5 @@
+aptitude update && aptitude safe-upgrade
+
 aptitude install mysql-server libapache2-mod-php5 php memcached git vim php5-mysql php-apc php5-mcrypt
 
 cd /srv
@@ -54,6 +56,8 @@ php importInterlang.php --verbose --ignore-errors simple simple-elements.csv
 
 php importProperties.php --verbose en en-elements-properties.csv
 
+cd w/
+php maintenance/rebuildLocalisationCache.php
 
 more extensions:
 for SiteMatrix go to /srv
@@ -68,6 +72,10 @@ git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/SpamBlacklist.gi
 git clone https://gerrit.wikimedia.org/r/p/mediawiki/extensions/ApiSandbox.git
 
 
+cd w/
+cd w/
+php maintenance/rebuildLocalisationCache.php
+php maintenance/rebuildLocalisationCache.php
 
 ===========================
 
@@ -78,11 +86,14 @@ git clone https://gerrit.wikimedia.org/r/p/mediawiki/core.git w
  s.o.
 apache
 im Browser installieren
+chown -R www-data:www-data images/
 maintenance/update.php
 cloen the extensions
 maintenance/update.php
 php extensions/Wikibase/client/maintenance/populateInterwiki.php
 php extensions/Wikibase/lib/maintenance/populateSitesTable.php (yes, again!)
+
+php maintenance/importDump.php simple-elements.xml
 
 For Load Balancer:
 /etc/mysql/my.cnf:
@@ -181,3 +192,10 @@ client apache:
         ServerSignature Off
 
 </VirtualHost>
+
+
+====
+
+Profiling
+
+echo "$wgProfiler['class'] = 'Profiler';" > StartProfiler.php
