@@ -53,7 +53,7 @@ $wgEnotifWatchlist     = false; # UPO
 $wgEmailAuthentication = true;
 
 ## Database settings
-require_once( "/srv/credentials-repo.php" );
+// credentials link
 
 # MySQL specific settings
 $wgDBprefix         = "";
@@ -97,11 +97,11 @@ $wgCacheDirectory = "$IP/cache";
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "en";
 
-$wgSecretKey = "7ee08cb4160edcf013b5c4ab85fd9286b65b7ab75227d290f3b1be0d39c91b32";
+$wgSecretKey = "blah";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "a1b5224ba3afeb22";
+$wgUpgradeKey = "blah";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook', 'vector':
