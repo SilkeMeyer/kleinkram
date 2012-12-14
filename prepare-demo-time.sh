@@ -5,8 +5,8 @@
 # maintenance/update.php and maintenance/rebuildLocalisationCache.php.
 #
 # The script does not take database prefixes into account!
-# 
-# Also, if you want to do anything to the client database, you'll have to add it.
+# If you use database prefixes: Right now, the script does not use variables
+# for this so please add the prefixes manually.
 
 
 #####################
@@ -15,6 +15,9 @@
 
 # database user:
 MYSQLUSER="blah"
+
+# path to mysql credentials file
+MYSQLCRED="/path/to/credentials"
 
 # repo db:
 REPODB="blahblah"
@@ -32,7 +35,43 @@ CLIENTPATH="/var/www/blubb"
 #####################################################
 #####################################################
 
+# git pull ALL the repos
+## repo
+### mediawiki core
+cd $REPOPATH
+pwd
+git checkout master
+git pull
+### extensions
+cd $REPOPATH/extensions
+for i in $(ls -d */); do
+	cd $i
+	pwd
+	git checkout master
+	git pull
+	cd ..
+done
 
+#####################################################
+## client
+### mediawiki core
+cd $CLIENTPATH
+pwd
+git checkout master
+git pull
+### extensions
+cd $CLIENTPATH/extensions
+for i in $(ls -d */); do
+	cd $i
+	pwd
+	git checkout master
+	git pull
+	cd ..
+done
+
+#####################################################
+
+# check if pollForChanges is running
 PID=$( ps aux | grep pollForChanges.php | grep -v grep | awk -F ' ' '{print $2}' )
 
 if [ "$PID" != "" ]; then
@@ -51,6 +90,13 @@ fi
 
 sleep 1
 
+# truncate the profiling database tables
+/usr/bin/mysql --defaults-extra-file=$MYSQLCRED --database=$REPODB -e 'TRUNCATE TABLE profiling'
+/usr/bin/mysql --defaults-extra-file=$MYSQLCRED --database=$CLIENTDB -e 'TRUNCATE TABLE profiling'
+echo "Purged profiling database tables..."
+
+sleep 1
+# reimport test data
 cd $REPOPATH/extensions/Wikibase/repo/maintenance
 
 /usr/bin/php importInterlang.php --verbose --ignore-errors simple simple-elements.csv
