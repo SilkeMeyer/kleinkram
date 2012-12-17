@@ -2,7 +2,7 @@
 ### This is Silke's script to update the public Wikidata demo server.
 ### Execute it with the git tag you want to update to. The list of tags is here:
 ### https://gerrit.wikimedia.org/r/gitweb?p=mediawiki/extensions/Wikibase.git;a=tags
-### e.g. "update-demo-system 2012-12-12"
+### e.g. "update-demo-system.sh 2012-12-12"
 
 GITTAG=$1
 
