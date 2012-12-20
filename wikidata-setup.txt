@@ -199,3 +199,9 @@ client apache:
 Profiling
 
 echo "$wgProfiler['class'] = 'Profiler';" > StartProfiler.php
+
+Caching:
+memcached on, LocalisationCache in files in separate /tmp/mw-cache directories (one per wiki instance)
+mkdir -p /tmp/mw-cache/devrepo
+chown -Rf wikidata:www-data /tmp/mw-cache/devrepo
+chmod -R g+w /tmp/mw-cache/devrepo
