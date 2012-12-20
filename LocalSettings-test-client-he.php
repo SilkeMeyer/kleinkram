@@ -65,8 +65,8 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgDBmysql5 = false;
 
 ## Shared memory settings
-$wgMainCacheType    = CACHE_NONE;
-$wgMemCachedServers = array();
+$wgMainCacheType    = CACHE_MEMCACHED;
+$wgMemCachedServers = array( "127.0.0.1:11211" );
 
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then set this to true:
@@ -91,7 +91,8 @@ $wgShellLocale = "en_US.utf8";
 ## Set $wgCacheDirectory to a writable directory on the web server
 ## to make your wiki go slightly faster. The directory should not
 ## be publically accessible from the web.
-$wgCacheDirectory = "$IP/cache";
+$wgCacheDirectory = "/tmp/mw-cache/testclient-he/";
+$wgLocalisationCacheConf['manualRecache'] = true;
 
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "he";
