@@ -211,10 +211,8 @@ $wgShowExceptionDetails = true;
 //$wgEnableJavaScriptTest = true;
 ini_set("display_errors", 1);
 
-$wgDebugLogGroups = array(
-	'wikidata'     => '/var/log/wikidata.log',
-);
 
+$wgDebugLogGroups['Wikibase\LangLinkHandler'] = "/tmp/testclient-he-LangLinkHandler.log";
 
 // Profiling
 // Only record profiling info for pages that took longer than this

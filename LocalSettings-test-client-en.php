@@ -239,9 +239,7 @@ $wgEnableJavaScriptTest = true;
 ini_set("display_errors", 1);
 $wgDebugToolbar = true;
 
-$wgDebugLogGroups = array(
-		'wikidata'     => '/var/log/wikidata.log',
-);
+$wgDebugLogGroups['Wikibase\LangLinkHandler'] = "/tmp/testclient-en-LangLinkHandler.log";
 
 require_once( "$IP/extensions/SiteMatrix/SiteMatrix.php" );
 $wgSiteMatrixFile = "$IP/../../mediawiki-config/langlist";

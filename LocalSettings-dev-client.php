@@ -332,3 +332,4 @@ $wgDebugToolbar = true;
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 $wgDebugLogGroups['wikibase'] = "/tmp/devclient-wikibase.log";
+$wgDebugLogGroups['Wikibase\LangLinkHandler'] = "/tmp/devclient-LangLinkHandler.log";
