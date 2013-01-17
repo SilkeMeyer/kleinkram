@@ -64,8 +64,18 @@ $wgDBTableOptions   = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 $wgDBmysql5 = false;
 
 ## Shared memory settings
+//$wgMainCacheType    = CACHE_NONE;
 $wgMainCacheType    = CACHE_MEMCACHED;
 $wgMemCachedServers = array( "127.0.0.1:11211" );
+
+# Localisation cache
+$wgUseLocalMessageCache = true;
+
+# Set $wgCacheDirectory to a writable directory on the web server
+## to make your wiki go slightly faster. The directory should not
+## be publically accessible from the web.
+$wgCacheDirectory = "/var/cache/mw-cache/devclient/";
+$wgLocalisationCacheConf['manualRecache'] = true;
 
 ## To enable image uploads, make sure the 'images' directory
 ## is writable, then set this to true:
@@ -86,12 +96,6 @@ $wgShellLocale = "en_US.utf8";
 ## images/temp, and make them all writable. Then uncomment
 ## this, if it's not already uncommented:
 #$wgHashedUploadDirectory = false;
-
-## Set $wgCacheDirectory to a writable directory on the web server
-## to make your wiki go slightly faster. The directory should not
-## be publically accessible from the web.
-$wgCacheDirectory = "/tmp/mw-cache/devclient/";
-$wgLocalisationCacheConf['manualRecache'] = true;
 
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "en";
@@ -163,8 +167,6 @@ require_once( "$IP/extensions/EmailCapture/EmailCapture.php" );
 require_once( "$IP/extensions/ExpandTemplates/ExpandTemplates.php" );
 require_once( "$IP/extensions/FeaturedFeeds/FeaturedFeeds.php" );
 require_once( "$IP/extensions/FlaggedRevs/FlaggedRevs.php" );
-require_once( "$IP/extensions/Gadgets/Gadgets.php" );
-//require_once( "$IP/extensions/GlobalBlocking/GlobalBlocking.php" );
 require_once( "$IP/extensions/GlobalUsage/GlobalUsage.php" );
 require_once( "$IP/extensions/ImageMap/ImageMap.php" );
 require_once( "$IP/extensions/InputBox/InputBox.php" );
@@ -190,7 +192,6 @@ require_once( "$IP/extensions/PostEdit/PostEdit.php" );
 require_once( "$IP/extensions/Renameuser/Renameuser.php" );
 require_once( "$IP/extensions/SecurePoll/SecurePoll.php" );
 require_once( "$IP/extensions/SimpleAntiSpam/SimpleAntiSpam.php" );
-//require_once( "$IP/extensions/SimpleSurvey/SimpleSurvey.php" );
 require_once( "$IP/extensions/SiteMatrix/SiteMatrix.php" );
 require_once( "$IP/extensions/SpamBlacklist/SpamBlacklist.php" );
 require_once( "$IP/extensions/SwiftCloudFiles/SwiftCloudFiles.php" );
@@ -207,11 +208,10 @@ require_once( "$IP/extensions/wikihiero/wikihiero.php" );
 require_once( "$IP/extensions/WikiLove/WikiLove.php" );
 require_once( "$IP/extensions/WikimediaMessages/WikimediaMessages.php" );
 require_once( "$IP/extensions/WikimediaShopLink/WikimediaShopLink.php" );
-//require_once( "$IP/extensions/ZeroRatedMobileAccess/ZeroRatedMobileAccess.php" );
 // OAI repository for update server
 @include( $IP.'/extensions/OAI/OAIRepo.php' );
 $oaiAgentRegex = '/experimental/';
-$oaiAuth = true; # broken... squid? php config? wtf
+$oaiAuth = true;
 $oaiAudit = true;
 $oaiAuditDatabase = 'oai';
 // Oversight
@@ -250,7 +250,7 @@ $wgWBSettings['changesDatabase'] = 'devrepo';
 
 // Repo Namespaces
 $wgWBSettings['repoNamespaces'] = array(
-                'wikibase-item' => 'Item',
+                'wikibase-item' => '',
                 'wikibase-property' => 'Property'
 );
 
@@ -332,4 +332,3 @@ $wgDebugToolbar = true;
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 $wgDebugLogGroups['wikibase'] = "/tmp/devclient-wikibase.log";
-$wgDebugLogGroups['Wikibase\LangLinkHandler'] = "/tmp/devclient-LangLinkHandler.log";
