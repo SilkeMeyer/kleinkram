@@ -4,7 +4,6 @@
 # Afterwards, it reimports the chemical elements to the repo, runs two scripts:
 # maintenance/update.php and maintenance/rebuildLocalisationCache.php.
 #
-# The script does not take database prefixes into account!
 # If you use database prefixes: Right now, the script does not use variables
 # for this so please add the prefixes manually.
 
@@ -14,22 +13,22 @@
 #####################
 
 # database user:
-MYSQLUSER="blah"
+MYSQLUSER="wikidata"
 
 # path to mysql credentials file
-MYSQLCRED="/path/to/credentials"
+MYSQLCRED="/home/smeyer/.mysql-credentials-dev-9"
 
 # repo db:
-REPODB="blahblah"
+REPODB="devrepo"
 
 # client db:
-CLIENTDB="blahblahblah"
+CLIENTDB="devclient"
 
 # installation path mediawiki core of repo
-REPOPATH="/var/www/blah"
+REPOPATH="/srv/devrepo/w"
 
 # installation path mediawiki core of client
-CLIENTPATH="/var/www/blubb"
+CLIENTPATH="/srv/devclient/w"
 
 #####################################################
 #####################################################
@@ -71,17 +70,17 @@ done
 
 #####################################################
 
-# check if pollForChanges is running
-PID=$( ps aux | grep pollForChanges.php | grep -v grep | awk -F ' ' '{print $2}' )
-
-if [ "$PID" != "" ]; then
-	echo "pollForChanges is running"
-else
-	echo "Starting pollForChanges..."
-	/usr/bin/php $CLIENTPATH/extensions/Wikibase/lib/maintenance/pollForChanges.php > /var/log/wikidata-replication.log
-	sleep 2
-	echo "Success. pollForChanges is logging to /var/log/wikidata-replication.log"
-fi
+## check if pollForChanges is running
+#PID=$( ps aux | grep pollForChanges.php | grep -v grep | awk -F ' ' '{print $2}' )
+#
+#if [ "$PID" != "" ]; then
+#	echo "pollForChanges is running"
+#else
+#	echo "Starting pollForChanges..."
+#	/usr/bin/php $CLIENTPATH/extensions/Wikibase/lib/maintenance/pollForChanges.php > /var/log/wikidata-replication.log
+#	sleep 2
+#	echo "Success. pollForChanges is logging to /var/log/wikidata-replication.log"
+#fi
 
 # clean the database
 # The 'yes-im-sure-maybe' option executes the script without further questions!
@@ -109,6 +108,6 @@ cd $REPOPATH
 /usr/bin/php maintenance/update.php --quick
 /usr/bin/php maintenance/rebuildLocalisationCache.php
 
-echo "Repo is ready for demo time. pollForChanges is logging to /var/log/wikidata-replication.log"
+echo "Ready for demo time!"
 
 #EOF
