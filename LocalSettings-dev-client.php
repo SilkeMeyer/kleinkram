@@ -100,11 +100,11 @@ $wgShellLocale = "en_US.utf8";
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "en";
 
-$wgSecretKey = "blah";
+$wgSecretKey = "6ad029430b1c503a09667938afb8a8c0e4e2652e2a8cba5efcf6bbb9dbdef6d8";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "blah";
+$wgUpgradeKey = "7c3a425a147af80b";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook', 'vector':
@@ -328,7 +328,9 @@ $wgDebugFunctionEntry = 0;
 $wgEnableProfileInfo = true;
 
 // debugging
-$wgDebugToolbar = true;
+//$wgDebugToolbar = true;
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 $wgDebugLogGroups['wikibase'] = "/tmp/devclient-wikibase.log";
+
+

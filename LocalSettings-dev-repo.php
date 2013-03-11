@@ -68,6 +68,7 @@ $wgDBmysql5 = false;
 //$wgMainCacheType    = CACHE_NONE;
 $wgMainCacheType    = CACHE_MEMCACHED;
 $wgMemCachedServers = array( "127.0.0.1:11211" );
+//$wgMemCachedServers = array( );
 
 # Localisation cache
 $wgUseLocalMessageCache = true;
@@ -103,11 +104,11 @@ $wgShellLocale = "en_US.utf8";
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "en";
 
-$wgSecretKey = "blah";
+$wgSecretKey = "7ee08cb4160edcf013b5c4ab85fd9286b65b7ab75227d290f3b1be0d39c91b32";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "blah";
+$wgUpgradeKey = "a1b5224ba3afeb22";
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'standard', 'nostalgia', 'cologneblue', 'monobook', 'vector':
@@ -147,7 +148,6 @@ require_once( "$IP/extensions/DataValues/DataValues.php" );
 require_once( "$IP/extensions/UniversalLanguageSelector/UniversalLanguageSelector.php" );
 require_once( "$IP/extensions/Wikibase/lib/WikibaseLib.php" );
 require_once( "$IP/extensions/Wikibase/repo/Wikibase.php" );
-#require_once( "$IP/extensions/Wikibase/repo/ExampleSettings.php" );
 
 // Define Item Namespace
 $baseNs = 100;
@@ -195,6 +195,7 @@ $wgGroupPermissions['sysop']['abusefilter-revert'] = true;
 require_once("$IP/extensions/ApiSandbox/ApiSandbox.php");
 $wgGroupPermissions['administrator']['apc'] = true;
 $wgGroupPermissions['bureaucrat']['apc'] = true;
+require_once( "$IP/extensions/Babel/Babel.php" );
 require_once("$IP/extensions/Nuke/Nuke.php");
 require_once( "$IP/extensions/OAI/OAIRepo.php" );
 $oaiAgentRegex = '!.*!';
@@ -265,6 +266,9 @@ $wgDebugFunctionEntry = 0;
 // Lots of debugging output from SquidUpdate.php
 $wgEnableProfileInfo = true;
 
+// for Hoo Man's stuff to work
+$wgCrossSiteAJAXdomains = array( 'wikidata-dev-client.wikimedia.de' );
+
 // debugging
 
 $wgDebugToolbar = true;
@@ -273,9 +277,17 @@ $wgShowDBErrorBacktrace = true;
 $wgDevelopmentWarnings = true;
 $wgEnableJavaScriptTest = true;
 $wgMemCachedDebug = true;
-
-$wgDebugLogFile = '/srv/logs/devrepo.log';
+$wgResourceLoaderDebug = true;
+$wgDebugLogFile = '/var/log/wikidata-devrepo-debug.log';
 // config internal test desktop computer
 //$wgContentHandlerUseDB = true;
 //$wgULSIMEEnabled = false;
-//
+
+// for WikibaseSolr
+$wgWBSSolariumAutoloader = "/srv/devrepo/w/extensions/WikibaseSolr/vendor/solarium/solarium/library/Solarium/Autoloader.php";
+require_once( "$IP/extensions/WikibaseSolr/WikibaseSolr.php" );
+require_once( "$IP/extensions/WikibaseSolr/includes/SpecialSolrTest.php" );
+$wgSpecialPages['SolrTest'] = 'SpecialSolrTest';
+$wgWBStores['solrstore'] = 'SolrStore';
+$wgWBSettings['defaultStore'] = 'solrstore';
+
