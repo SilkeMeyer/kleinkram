@@ -174,11 +174,12 @@ $wgWBSettings['entityNamespaces'][CONTENT_MODEL_WIKIBASE_QUERY] = WB_NS_QUERY; /
 
 $wgWBSettings['localClientDatabases'] = array( 'enwiki' => 'devclient' );
 
-// More things to play with
-$wgWBSettings['apiInDebug'] = false;
-$wgWBSettings['apiInTest'] = false;
-$wgWBSettings['apiWithRights'] = true;
-$wgWBSettings['apiWithTokens'] = true;
+// marked as deprecated in gerrit
+//// More things to play with
+//$wgWBSettings['apiInDebug'] = false;
+//$wgWBSettings['apiInTest'] = false;
+//$wgWBSettings['apiWithRights'] = true;
+//$wgWBSettings['apiWithTokens'] = true;
 
 $wgContentHandlerUseDB = true;
 
