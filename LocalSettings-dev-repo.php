@@ -283,11 +283,11 @@ $wgDebugLogFile = '/var/log/wikidata-devrepo-debug.log';
 //$wgContentHandlerUseDB = true;
 //$wgULSIMEEnabled = false;
 
-// for WikibaseSolr
-$wgWBSSolariumAutoloader = "/srv/devrepo/w/extensions/WikibaseSolr/vendor/solarium/solarium/library/Solarium/Autoloader.php";
-require_once( "$IP/extensions/WikibaseSolr/WikibaseSolr.php" );
-require_once( "$IP/extensions/WikibaseSolr/includes/SpecialSolrTest.php" );
-$wgSpecialPages['SolrTest'] = 'SpecialSolrTest';
-$wgWBStores['solrstore'] = 'SolrStore';
-$wgWBSettings['defaultStore'] = 'solrstore';
+//// for WikibaseSolr (currently not working yet)
+//$wgWBSSolariumAutoloader = "/srv/devrepo/w/extensions/WikibaseSolr/vendor/solarium/solarium/library/Solarium/Autoloader.php";
+//require_once( "$IP/extensions/WikibaseSolr/WikibaseSolr.php" );
+//require_once( "$IP/extensions/WikibaseSolr/includes/SpecialSolrTest.php" );
+//$wgSpecialPages['SolrTest'] = 'SpecialSolrTest';
+//$wgWBStores['solrstore'] = 'SolrStore';
+//$wgWBSettings['defaultStore'] = 'solrstore';
 
